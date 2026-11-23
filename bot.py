@@ -6,6 +6,8 @@ import requests
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
+import signal_hub
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("forex-bot")
 
@@ -37,6 +39,8 @@ def parse_pair(text: str):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Welcome to Forex Bot!\n\n" + HELP)
+    # start forex signals for this user
+    await signal_hub.on_start(context.bot, update.effective_chat.id)
 
 
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
